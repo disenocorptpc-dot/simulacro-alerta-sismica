@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚨 SIMULACRO NACIONAL 2026 - ALERTA SÍSMICA</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: #0b0f19;
+    color: #ffffff;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .banner-top {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #b71c1c;
+    color: #fff;
+    padding: 16px 20px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: flash 1s infinite alternate;
+    box-shadow: 0 4px 20px rgba(183, 28, 28, 0.6);
+    z-index: 100;
+  }
+  @keyframes flash {
+    0% { background: #b71c1c; }
+    100% { background: #1a0000; }
+  }
+  .card {
+    max-width: 920px;
+    background: rgba(18, 24, 38, 0.95);
+    border: 3px solid #ff3333;
+    border-radius: 12px;
+    padding: 40px;
+    margin: 80px 20px 20px 20px;
+    box-shadow: 0 0 60px rgba(255, 51, 51, 0.35);
+  }
+  h1 {
+    font-size: 46px;
+    font-weight: 900;
+    color: #ff4d4d;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .badge-simulacro {
+    display: inline-block;
+    background: #ffb300;
+    color: #000;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 2.5px;
+    padding: 6px 18px;
+    border-radius: 4px;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+  .hypo-box {
+    background: #141b2d;
+    border-left: 5px solid #ff4d4d;
+    padding: 18px;
+    text-align: left;
+    margin: 22px 0;
+    font-size: 15px;
+    line-height: 1.6;
+    border-radius: 0 8px 8px 0;
+  }
+  .hypo-box b { color: #ff8080; }
+  .instructions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .inst-item {
+    background: #1c263b;
+    border: 1px solid #2d3d5f;
+    border-radius: 8px;
+    padding: 18px;
+    font-size: 13.5px;
+  }
+  .inst-item span {
+    display: block;
+    font-size: 30px;
+    margin-bottom: 8px;
+  }
+  .btn-sound {
+    background: #d32f2f;
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    font-size: 16px;
+    font-weight: 800;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 26px;
+    letter-spacing: 1px;
+    transition: 0.2s;
+  }
+  .btn-sound:hover { background: #ff1744; }
+  .footer-live {
+    margin-top: 22px;
+    font-size: 12px;
+    color: #7a8fa6;
+  }
+  .timer-box {
+    font-size: 24px;
+    font-weight: 800;
+    color: #ffea00;
+    margin: 12px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="banner-top">⚠️ ALERTA SÍSMICA — SIMULACRO NACIONAL 2026 ⚠️</div>
+
+<div class="card">
+  <div class="badge-simulacro">EJERCICIO DE PROTECCIÓN CIVIL</div>
+  <h1>ALERTA SÍSMICA</h1>
+  <p style="font-size: 17px; color: #b0c4de;">Activación Nacional · 19 de Septiembre · 13:00 hrs (Cancún) / 12:00 hrs (CDMX)</p>
+  
+  <div class="hypo-box">
+    <b>📍 Hipótesis Regional Península de Yucatán:</b><br>
+    Sismo Magnitud 7.0 con epicentro en Cabo Catoche, Quintana Roo.<br>
+    <b>🚨 Sistemas de Alerta:</b> SASMEX, C5, Difusión Masiva Cell Broadcast en Telefonía Móvil.
+  </div>
+
+  <div class="instructions">
+    <div class="inst-item"><span>🧘</span><b>CONSERVE LA CALMA</b><br>No corra, no grite, no empuje.</div>
+    <div class="inst-item"><span>🛡️</span><b>REPLIEGUE</b><br>Zonas de menor riesgo y columnas.</div>
+    <div class="inst-item"><span>🚶</span><b>EVACUACIÓN</b><br>Rutas hacia puntos de reunión seguros.</div>
+    <div class="inst-item"><span>📋</span><b>BRIGADAS</b><br>Siga las instrucciones de Protección Civil.</div>
+  </div>
+
+  <button class="btn-sound" id="sndBtn" onclick="toggleSiren()">🔊 ACTIVAR SIRENA SÍSMICA</button>
+  <div class="footer-live">The Palace Company · Sistema de Emergencias y Protección Civil</div>
+</div>
+
+<script>
+let audioCtx = null;
+let sirenInterval = null;
+
+function toggleSiren() {
+  const btn = document.getElementById('sndBtn');
+  if (sirenInterval) {
+    clearInterval(sirenInterval);
+    sirenInterval = null;
+    btn.innerText = '🔊 ACTIVAR SIRENA SÍSMICA';
+    return;
+  }
+  btn.innerText = '🔇 DETENER SIRENA';
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  
+  function playTone(freq, dur) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + dur);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + dur);
+  }
+
+  let state = false;
+  sirenInterval = setInterval(() => {
+    playTone(state ? 853 : 960, 0.4);
+    state = !state;
+  }, 450);
+}
+</script>
+</body>
+</html>
